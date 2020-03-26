@@ -3,4 +3,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#6200EE</color>
+
+    <color name="colorInverse">#FFFFFF</color>
+
+    <color name="colorButtonPressed">#3700B3</color>
+    <color name="colorButtonDisabled">#E0CCEB</color>
+
 </resources>

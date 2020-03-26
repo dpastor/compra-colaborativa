@@ -1,0 +1,41 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Buttons -->
+
+        <item name="buttonStyle">@style/AppTheme.Button.PrimaryButton</item>
+
+        <item name="colorTextButtonPrimary">@color/colorInverse</item>
+        <item name="colorTextButtonSecondary">@color/colorAccent</item>
+        <item name="colorTextButtonSecondaryPressed">@color/colorButtonPressed</item>
+        <item name="colorTextButtonSecondaryDisabled">@color/colorButtonDisabled</item>
+
+        <item name="colorTextButtonPrimaryInverse">@color/colorAccent</item>
+        <item name="colorTextButtonPrimaryInversePressed">@color/colorAccent</item>
+        <item name="colorTextButtonPrimaryInverseDisabled">@color/colorButtonDisabled</item>
+
+        <item name="colorButtonPrimaryBackground">@color/colorAccent</item>
+        <item name="colorButtonPrimaryBackgroundPressed">@color/colorButtonPressed</item>
+        <item name="colorButtonPrimaryBackgroundDisabled">@color/colorButtonDisabled</item>
+
+        <item name="colorButtonSecondaryBackground">@color/colorAccent</item>
+        <item name="colorButtonSecondaryBackgroundPressed">@color/colorButtonPressed</item>
+        <item name="colorButtonSecondaryBackgroundDisabled">@color/colorButtonDisabled</item>
+
+        <item name="colorButtonPrimaryBackgroundInverse">@color/colorInverse</item>
+        <item name="colorButtonPrimaryBackgroundPressedInverse">@color/colorButtonDisabled</item>
+        <item name="colorButtonPrimaryBackgroundDisabledInverse">@color/colorButtonDisabled</item>
+    </style>
+
+    <style name="OldPersonTextAppearance" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+</resources>
