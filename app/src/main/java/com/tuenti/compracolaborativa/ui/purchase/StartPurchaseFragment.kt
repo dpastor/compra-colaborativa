@@ -58,7 +58,7 @@ private class UserListAdapter(
     }
 
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
-        holder.view.findViewById<TextView>(R.id.user_name).text = userList[position].displayName
+        holder.view.findViewById<TextView>(R.id.title).text = userList[position].displayName
     }
 
     override fun getItemCount() = userList.size
