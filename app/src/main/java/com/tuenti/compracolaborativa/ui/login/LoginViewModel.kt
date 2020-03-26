@@ -28,7 +28,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun loginDataChanged(username: String, address: String, phone: String) {
-        if (username.isNullOrEmpty() || address.isNullOrEmpty() || phone.isNullOrEmpty()) {
+        if (username.isNullOrEmpty() || address.isNullOrEmpty() /*|| phone.isNullOrEmpty()*/) {
             return
         }
 
@@ -36,8 +36,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             _loginForm.value = LoginFormState(nameError = R.string.invalid_name)
         } else if (!isAddressValid(address)) {
             _loginForm.value = LoginFormState(addressError = R.string.invalid_address)
-        } else if (!isPhoneValid(phone)) {
-            _loginForm.value = LoginFormState(phoneError = R.string.invalid_phone)
+//        } else if (!isPhoneValid(phone)) {
+//            _loginForm.value = LoginFormState(phoneError = R.string.invalid_phone)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }

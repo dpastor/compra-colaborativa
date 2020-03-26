@@ -51,9 +51,9 @@ class LoginActivity : AppCompatActivity() {
             if (loginState.addressError != null) {
                 address.error = getString(loginState.addressError)
             }
-            if (loginState.phoneError != null) {
-                phone.error = getString(loginState.phoneError)
-            }
+//            if (loginState.phoneError != null) {
+//                phone.error = getString(loginState.phoneError)
+//            }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
         name.afterTextChanged { updateViewModel() }
         address.afterTextChanged { updateViewModel() }
-        phone.afterTextChanged { updateViewModel() }
+//        phone.afterTextChanged { updateViewModel() }
 
         login.setOnClickListener {
             loading.visibility = View.VISIBLE
@@ -82,11 +82,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateViewModel() {
+    private fun updateViewModel()  {
         loginViewModel.loginDataChanged(
             name.text.toString(),
             address.text.toString(),
-            phone.text.toString()
+            ""/*phone.text.toString()*/
         )
     }
 
