@@ -1,11 +1,8 @@
 package com.tuenti.compracolaborativa.ui.login
 
+import android.R.attr.apiKey
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,7 +11,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.tuenti.compracolaborativa.R
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +26,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Places.initialize(applicationContext, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
+        val placesClient: PlacesClient = Places.createClient(this)
 
         setContentView(R.layout.activity_login)
 

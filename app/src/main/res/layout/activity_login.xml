@@ -27,6 +27,18 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextOldPerson" />
 
+    <fragment android:id="@+id/autocomplete_fragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        />
+
     <EditText
         android:id="@+id/address"
         android:layout_width="0dp"
@@ -42,6 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
+        android:visibility="gone"
         style="@style/TextOldPerson" />
 
     <EditText
@@ -120,4 +133,14 @@
         app:layout_constraintStart_toStartOf="@+id/address"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="284dp"
+        android:layout_height="109dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
