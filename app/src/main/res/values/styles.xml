@@ -8,4 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextOldPerson" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>
