@@ -1,10 +1,11 @@
 package com.tuenti.compracolaborativa.ui.login
 
-import android.R.attr.apiKey
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -13,10 +14,15 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.tuenti.compracolaborativa.R
 
 
@@ -27,15 +33,30 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Places.initialize(applicationContext, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
-        val placesClient: PlacesClient = Places.createClient(this)
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
+            val placesClient: PlacesClient = Places.createClient(this)
+        }
 
         setContentView(R.layout.activity_login)
 
         val username = findViewById<EditText>(R.id.name)
-        val password = findViewById<EditText>(R.id.address)
+        val address = findViewById<EditText>(R.id.address)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+
+        address.isFocusable = false
+        address.isClickable = true
+        address.setOnClickListener {
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .setCountry("ES")
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_RESULT_CODE)
+        }
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -50,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                 username.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                address.error = getString(loginState.passwordError)
             }
         })
 
@@ -73,15 +94,15 @@ class LoginActivity : AppCompatActivity() {
         username.afterTextChanged {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
-                password.text.toString()
+                address.text.toString()
             )
         }
 
-        password.apply {
+        address.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
                     username.text.toString(),
-                    password.text.toString()
+                    address.text.toString()
                 )
             }
 
@@ -90,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
                             username.text.toString(),
-                            password.text.toString()
+                            address.text.toString()
                         )
                 }
                 false
@@ -98,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                loginViewModel.login(username.text.toString(), address.text.toString())
             }
         }
     }
@@ -116,6 +137,34 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AUTOCOMPLETE_RESULT_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val place = Autocomplete.getPlaceFromIntent(data!!)
+                Log.i(
+                    "test",
+                    "Place: " + place.name + ", " + place.id + ", " + place.address
+                )
+                val address = place.address
+                // do query with address
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) { // TODO: Handle the error.
+                val status = Autocomplete.getStatusFromIntent(data!!)
+                Log.i("test", status.statusMessage?:"error")
+            } else if (resultCode == Activity.RESULT_CANCELED) { // The user canceled the operation.
+            }
+        }
+    }
+
+
+    companion object {
+        const val AUTOCOMPLETE_RESULT_CODE = 1
     }
 }
 
