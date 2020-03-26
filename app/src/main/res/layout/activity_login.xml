@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/phone">
 
         <RadioButton
-            android:id="@+id/radio_masculino"
+            android:id="@+id/radio_buyer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -79,7 +79,7 @@
             android:textAppearance="@style/OldPersonTextAppearance"/>
 
         <RadioButton
-            android:id="@+id/radio_femenino"
+            android:id="@+id/radio_old_person"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"

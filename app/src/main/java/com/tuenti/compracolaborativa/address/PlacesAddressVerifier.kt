@@ -23,7 +23,7 @@ class PlacesAddressVerifier constructor(
     private val awex: Awex = AwexProvider.instance
 
     init {
-        Places.initialize(context, "API_KEY")
+        Places.initialize(context, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
         placesClient = Places.createClient(context)
         autoCompleteSessionToken = AutocompleteSessionToken.newInstance()
     }
