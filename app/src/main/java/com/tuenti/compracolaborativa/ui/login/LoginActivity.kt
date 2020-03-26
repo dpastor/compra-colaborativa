@@ -14,17 +14,13 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.tuenti.compracolaborativa.R
-
+import com.tuenti.compracolaborativa.core.afterTextChanged
+import com.tuenti.compracolaborativa.ui.address.AddressActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -32,12 +28,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
-            val placesClient: PlacesClient = Places.createClient(this)
-        }
-
         setContentView(R.layout.activity_login)
 
         val username = findViewById<EditText>(R.id.name)
@@ -48,13 +38,7 @@ class LoginActivity : AppCompatActivity() {
         address.isFocusable = false
         address.isClickable = true
         address.setOnClickListener {
-            // Set the fields to specify which types of place data to
-            // return after the user has made a selection.
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
-            // Start the autocomplete intent.
-            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                .setCountry("ES")
-                .build(this)
+            val intent = Intent(this, AddressActivity::class.java)
             startActivityForResult(intent, AUTOCOMPLETE_RESULT_CODE)
         }
 
@@ -116,11 +100,11 @@ class LoginActivity : AppCompatActivity() {
                 }
                 false
             }
+        }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), address.text.toString())
-            }
+        login.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            loginViewModel.login(username.text.toString(), address.text.toString())
         }
     }
 
@@ -168,17 +152,4 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
 
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}

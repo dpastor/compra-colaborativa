@@ -23,7 +23,7 @@ class PlacesAddressVerifier constructor(
     private val awex: Awex = AwexProvider.instance
 
     init {
-        Places.initialize(context, "API_KEY")
+        Places.initialize(context, "AIzaSyCjd-Mi3mj_lsXtyQKm3WI2AudZwf-xZfg")
         placesClient = Places.createClient(context)
         autoCompleteSessionToken = AutocompleteSessionToken.newInstance()
     }
@@ -42,7 +42,11 @@ class PlacesAddressVerifier constructor(
             .addOnSuccessListener { response ->
                 deferred.resolve(response.autocompletePredictions.map { AddressSuggestion(it.placeId, it.getFullText(null).toString()) })
             }
-            .addOnFailureListener { ex -> deferred.reject(ex) }
+            .addOnFailureListener { ex ->
+                if (deferred.isPending) {
+                    deferred.reject(ex)
+                }
+            }
 
         return deferred
     }
@@ -61,6 +65,8 @@ class PlacesAddressVerifier constructor(
                     addressComponents.get("route"),
                     addressComponents.get("street_number"),
                     addressComponents.get("floor"),
+                    "",
+                    "",
                     addressComponents.get("locality"),
                     addressComponents.get("postal_code"),
                     addressComponents.get("administrative_area_level_1"),
