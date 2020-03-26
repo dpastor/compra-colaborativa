@@ -3,7 +3,6 @@ package com.tuenti.compracolaborativa.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import com.tuenti.compracolaborativa.R
 import com.tuenti.compracolaborativa.data.LoginRepository
 import com.tuenti.compracolaborativa.data.Result
@@ -28,27 +27,24 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    fun loginDataChanged(username: String, password: String) {
+    fun loginDataChanged(username: String, address: String, phone: String) {
+        if (username.isNullOrEmpty() || address.isNullOrEmpty() /*|| phone.isNullOrEmpty()*/) {
+            return
+        }
+
         if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+            _loginForm.value = LoginFormState(nameError = R.string.invalid_name)
+        } else if (!isAddressValid(address)) {
+            _loginForm.value = LoginFormState(addressError = R.string.invalid_address)
+//        } else if (!isPhoneValid(phone)) {
+//            _loginForm.value = LoginFormState(phoneError = R.string.invalid_phone)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
-    }
+    private fun isUserNameValid(username: String): Boolean = username.length > 1
 
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
-    }
+    private fun isAddressValid(address: String): Boolean = address.length > 1
+    private fun isPhoneValid(phone: String): Boolean = phone.length == 9
 }
