@@ -6,6 +6,6 @@ package com.tuenti.compracolaborativa.ui.login
 data class LoginFormState(
     val nameError: Int? = null,
     val addressError: Int? = null,
-    val phoneError: Int? = null,
+    val addressDetailError: Int? = null,
     val isDataValid: Boolean = false
 )
