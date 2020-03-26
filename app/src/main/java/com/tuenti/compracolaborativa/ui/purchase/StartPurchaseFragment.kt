@@ -1,4 +1,4 @@
-package com.tuenti.compracolaborativa.ui.notifications
+package com.tuenti.compracolaborativa.ui.purchase
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tuenti.compracolaborativa.R
 
-class NotificationsFragment : Fragment() {
+class StartPurchaseFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var startPurchaseViewModel: StartPurchaseViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        startPurchaseViewModel =
+                ViewModelProviders.of(this).get(StartPurchaseViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_start_purchase, container, false)
+        val textView: TextView = root.findViewById(R.id.text_start_purchase)
+        startPurchaseViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

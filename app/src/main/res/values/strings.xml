@@ -2,6 +2,7 @@
     <string name="app_name">Compra Colaborativa</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
+    <string name="title_start_purchase">Start purchase</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_login">Regístrate</string>
     <string name="prompt_name">Nombre</string>
