@@ -1,26 +1,19 @@
 package com.tuenti.compracolaborativa.ui.login
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.tuenti.compracolaborativa.R
-import com.tuenti.compracolaborativa.core.afterTextChanged
-import com.tuenti.compracolaborativa.ui.address.AddressActivity
+import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,19 +21,21 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.name)
-        val address = findViewById<EditText>(R.id.address)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-
-        address.isFocusable = false
-        address.isClickable = true
-        address.setOnClickListener {
-            val intent = Intent(this, AddressActivity::class.java)
-            startActivityForResult(intent, AUTOCOMPLETE_RESULT_CODE)
-        }
+//        address.isFocusable = false
+//        address.isClickable = true
+//        address.setOnClickListener {
+//            // Set the fields to specify which types of place data to
+//            // return after the user has made a selection.
+//            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)
+//            // Start the autocomplete intent.
+//            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+//                .setCountry("ES")
+//                .build(this)
+//            startActivityForResult(intent, AUTOCOMPLETE_RESULT_CODE)
+//        }
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -48,15 +43,17 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+            if (loginState.nameError != null) {
+                name.error = getString(loginState.nameError)
             }
-            if (loginState.passwordError != null) {
-                address.error = getString(loginState.passwordError)
+            if (loginState.addressError != null) {
+                address.error = getString(loginState.addressError)
             }
+//            if (loginState.phoneError != null) {
+//                phone.error = getString(loginState.phoneError)
+//            }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
@@ -75,37 +72,22 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                address.text.toString()
-            )
-        }
-
-        address.apply {
-            afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    address.text.toString()
-                )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            address.text.toString()
-                        )
-                }
-                false
-            }
-        }
+        name.afterTextChanged { updateViewModel() }
+        address.afterTextChanged { updateViewModel() }
+//        phone.afterTextChanged { updateViewModel() }
 
         login.setOnClickListener {
             loading.visibility = View.VISIBLE
-            loginViewModel.login(username.text.toString(), address.text.toString())
+            loginViewModel.login(name.text.toString(), address.text.toString())
         }
+    }
+
+    private fun updateViewModel()  {
+        loginViewModel.loginDataChanged(
+            name.text.toString(),
+            address.text.toString(),
+            ""/*phone.text.toString()*/
+        )
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -123,28 +105,28 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AUTOCOMPLETE_RESULT_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val place = Autocomplete.getPlaceFromIntent(data!!)
-                Log.i(
-                    "test",
-                    "Place: " + place.name + ", " + place.id + ", " + place.address
-                )
-                val address = place.address
-                // do query with address
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) { // TODO: Handle the error.
-                val status = Autocomplete.getStatusFromIntent(data!!)
-                Log.i("test", status.statusMessage?:"error")
-            } else if (resultCode == Activity.RESULT_CANCELED) { // The user canceled the operation.
-            }
-        }
-    }
+//    override fun onActivityResult(
+//        requestCode: Int,
+//        resultCode: Int,
+//        data: Intent?
+//    ) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == AUTOCOMPLETE_RESULT_CODE) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                val place = Autocomplete.getPlaceFromIntent(data!!)
+//                Log.i(
+//                    "test",
+//                    "Place: " + place.name + ", " + place.id + ", " + place.address
+//                )
+//                val address = place.address
+//                // do query with address
+//            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) { // TODO: Handle the error.
+//                val status = Autocomplete.getStatusFromIntent(data!!)
+//                Log.i("test", status.statusMessage ?: "error")
+//            } else if (resultCode == Activity.RESULT_CANCELED) { // The user canceled the operation.
+//            }
+//        }
+//    }
 
 
     companion object {
@@ -152,4 +134,17 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Extension function to simplify setting an afterTextChanged action to EditText components.
+ */
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
 
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
+}

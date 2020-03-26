@@ -10,7 +10,8 @@
     <string name="prompt_phone">Teléfono</string>
     <string name="action_sign_in">Entrar</string>
     <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_name">Tienes que introducir un nombre válido</string>
+    <string name="invalid_address">Tienes que introducir una dirección correcta</string>
+    <string name="invalid_phone">Tienes que introducir un número móvil correcto, de 9 cifras</string>
+    <string name="login_failed">Algo ha fallado</string>
 </resources>
