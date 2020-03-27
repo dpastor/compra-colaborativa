@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -52,6 +53,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.google.android.libraries.places:places:2.2.0'
     implementation 'com.raycoarana.awex:awex-android:0.0.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
